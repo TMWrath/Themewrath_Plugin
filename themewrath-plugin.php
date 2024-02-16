@@ -12,7 +12,7 @@
 if (!defined('ABSPATH')) {
 
     die('Invalid request.');
-    
+
 }
 
 $theme = wp_get_theme(); // Gets the current theme
@@ -21,8 +21,9 @@ $theme = wp_get_theme(); // Gets the current theme
 if ('ThemeWrath' !== $theme->name && 'ThemeWrath' !== $theme->parent_theme) {
     // ThemeWrath theme is not active, display admin notice and stop further execution
     add_action('admin_notices', 'theme_wrath_plugin_admin_notice');
-    
-    function theme_wrath_plugin_admin_notice() {
+
+    function theme_wrath_plugin_admin_notice()
+    {
         echo '<div class="notice notice-error"><p>';
         _e('<b>ThemeWrath-Plugin</b> requires the <b>ThemeWrath</b> theme to be active. Please activate <b>ThemeWrath</b> to use the plugin.', 'theme-wrath-plugin');
         echo '</p></div>';
@@ -48,14 +49,15 @@ function remove_post_slug($post_link, $post)
 add_filter('post_type_link', 'remove_post_slug', 10, 2);
 
 // Add Admin Menu For T.M. Wrath Settings
-function tmwrath_menu() {
+function tmwrath_menu()
+{
     add_menu_page(
         'T.M. Wrath', //page title
         'T.M. Wrath', //menu title
         'manage_options',
         'tmwrath-menu', //slug
         'tmwrath_menu_html', // menu html
-        '', // menu icon
+        plugins_url('Themewrath_Plugin/images/icon.png'), // menu icon
         20
     );
     add_submenu_page(
@@ -70,26 +72,42 @@ function tmwrath_menu() {
 }
 add_action('admin_menu', 'tmwrath_menu');
 
-function tmwrath_menu_html() {
-    
+function tmwrath_admin_menu_icon_css() {
+    echo '
+    <style>
+        #adminmenu .wp-menu-image img {
+
+            width: 60%;
+            height: 60%;
+
+        }
+    </style>';
+}
+add_action('admin_head', 'tmwrath_admin_menu_icon_css');
+
+function tmwrath_menu_html()
+{
+
     if (!current_user_can('manage_options')) {
         return;
     }
 
 }
 
-function tmwrath_settings_html() {
-    
+function tmwrath_settings_html()
+{
+
     if (!current_user_can('manage_options')) {
         return;
     }
 
 }
 
-function art_post_type() {
+function art_post_type()
+{
     $args = array(
         'public' => true,
-        'label'  => 'Art',
+        'label' => 'Art',
         'supports' => array('title'),
         'show_ui' => true, // Ensures that the UI is shown
         'show_in_menu' => 'tmwrath-menu', // Slug of the parent menu
