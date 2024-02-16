@@ -85,3 +85,15 @@ function tmwrath_settings_html() {
     }
 
 }
+
+function art_post_type() {
+    $args = array(
+        'public' => true,
+        'label'  => 'Art',
+        'supports' => array('title'),
+        'show_ui' => true, // Ensures that the UI is shown
+        'show_in_menu' => 'tmwrath-menu', // Slug of the parent menu
+    );
+    register_post_type('art', $args);
+}
+add_action('init', 'art_post_type');
