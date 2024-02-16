@@ -8,3 +8,9 @@
     Version: 1.0
 
 */
+
+if (!defined('ABSPATH')) {
+
+    die('Invalid request.');
+    
+}
