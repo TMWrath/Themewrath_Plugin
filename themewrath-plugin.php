@@ -15,6 +15,20 @@ if (!defined('ABSPATH')) {
 
 }
 
+
+/**
+ * DEFINE PATHS
+ */
+define( 'WRATH_PATH', plugin_dir_path( __FILE__ ) );
+define( 'WRATH_FILE', __FILE__ );
+define( 'WRATH_CSS_PATH', WRATH_PATH . 'assets/css/' );
+
+/**
+ * DEFINE URLS
+ */
+define( 'WRATH_URL', plugin_dir_url( __FILE__ ) );
+define( 'WRATH_IMAGES_URL', WRATH_URL . '/assets/images/' );
+
 $theme = wp_get_theme(); // Gets the current theme
 
 // Check if 'ThemeWrath' is NOT the active theme or parent theme
@@ -57,7 +71,7 @@ function tmwrath_menu()
         'manage_options',
         'tmwrath-menu', //slug
         'tmwrath_menu_html', // menu html
-        plugins_url('Themewrath_Plugin/images/icon.png'), // menu icon
+        esc_url( WRATH_IMAGES_URL . 'icon.svg' ), // menu icon
         20
     );
     add_submenu_page(
@@ -115,3 +129,18 @@ function art_post_type()
     register_post_type('art', $args);
 }
 add_action('init', 'art_post_type');
+
+function test_menu()
+{
+    add_menu_page(
+        'Test', //page title
+        'Test', //menu title
+        'manage_options',
+        'test-menu', //slug
+        '', // menu html
+        '', // menu icon
+        20
+    );
+
+}
+add_action('admin_menu', 'test_menu');
