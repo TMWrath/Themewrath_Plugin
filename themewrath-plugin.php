@@ -14,3 +14,19 @@ if (!defined('ABSPATH')) {
     die('Invalid request.');
     
 }
+
+$theme = wp_get_theme(); // Gets the current theme
+
+// Check if 'ThemeWrath' is NOT the active theme or parent theme
+if ('ThemeWrath' !== $theme->name && 'ThemeWrath' !== $theme->parent_theme) {
+    // ThemeWrath theme is not active, display admin notice and stop further execution
+    add_action('admin_notices', 'theme_wrath_plugin_admin_notice');
+    
+    function theme_wrath_plugin_admin_notice() {
+        echo '<div class="notice notice-error"><p>';
+        _e('<b>ThemeWrath-Plugin</b> requires the <b>ThemeWrath</b> theme to be active. Please activate <b>ThemeWrath</b> to use the plugin.', 'theme-wrath-plugin');
+        echo '</p></div>';
+    }
+
+    return;
+}
