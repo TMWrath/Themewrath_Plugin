@@ -30,3 +30,19 @@ if ('ThemeWrath' !== $theme->name && 'ThemeWrath' !== $theme->parent_theme) {
 
     return;
 }
+
+// Remove Default Wordpress Post Post-Type.
+function remove_posts_menu()
+{
+    remove_menu_page('edit.php');
+}
+add_action('admin_menu', 'remove_posts_menu');
+
+function remove_post_slug($post_link, $post)
+{
+    if ($post->post_type === 'post') {
+        return home_url('/');
+    }
+    return $post_link;
+}
+add_filter('post_type_link', 'remove_post_slug', 10, 2);
