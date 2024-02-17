@@ -116,3 +116,58 @@ function art_post_type()
     register_post_type('art', $args);
 }
 add_action('init', 'art_post_type');
+
+
+// Create A Page On Activation
+function your_plugin_create_page($page_title, $page_content) {
+    $page_obj = get_page_by_title($page_title, 'OBJECT', 'page');
+
+    if ($page_obj) {
+        // Page already exists
+        return false;
+    }
+
+    $page_args = array(
+        'post_type'      => 'page',
+        'post_status'    => 'publish',
+        'post_title'     => ucwords($page_title),
+        'post_name'      => strtolower(str_replace(' ', '-', trim($page_title))),
+        'post_content'   => $page_content,
+    );
+
+    $page_id = wp_insert_post($page_args);
+
+    return $page_id;
+}
+
+// Function to be called upon plugin activation
+function themewrath_pages_on_activation() {
+    $page_title = 'The Collection'; // Define your page title here
+    $page_content = '<h3>Welcome to The Collection</h3>'; // Define your page content here
+
+    $current_page = your_plugin_create_page($page_title, $page_content);
+
+    if (false !== $current_page) {
+        // If the page was successfully created, set a transient to show a success notice
+        set_transient('themewrath_page_creation_notice', 'created', 60);
+    } else {
+        // If the page already exists, set a transient to show a notice that it exists
+        set_transient('themewrath_page_creation_notice', 'exists', 60);
+    }
+}
+
+// Register the activation hook
+register_activation_hook(__FILE__, 'themewrath_pages_on_activation');
+
+// Admin notice for page creation
+function themewrath_admin_notice_page_creation() {
+    if ($notice = get_transient('themewrath_page_creation_notice')) {
+        if ('created' === $notice) {
+            echo '<div class="notice notice-success is-dismissible"><p>"The Collection" page has been created successfully.</p></div>';
+        } elseif ('exists' === $notice) {
+            echo '<div class="notice notice-warning is-dismissible"><p>"The Collection" page already exists.</p></div>';
+        }
+        delete_transient('themewrath_page_creation_notice');
+    }
+}
+add_action('admin_notices', 'themewrath_admin_notice_page_creation');
