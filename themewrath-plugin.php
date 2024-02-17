@@ -62,16 +62,15 @@ function remove_post_slug($post_link, $post)
 }
 add_filter('post_type_link', 'remove_post_slug', 10, 2);
 
-// Add Admin Menu For T.M. Wrath Settings
-function tmwrath_menu()
-{
+/// Add Admin Menu For T.M. Wrath Settings
+function tmwrath_menu() {
     add_menu_page(
         'T.M. Wrath', //page title
         'T.M. Wrath', //menu title
         'manage_options',
         'tmwrath-menu', //slug
         'tmwrath_menu_html', // menu html
-        esc_url( WRATH_IMAGES_URL . 'icon.svg' ), // menu icon
+        esc_url(WRATH_IMAGES_URL . 'icon.svg'), // menu icon
         20
     );
     add_submenu_page(
@@ -82,27 +81,74 @@ function tmwrath_menu()
         'tmwrath-settings',
         'tmwrath_settings_html'
     );
-
 }
 add_action('admin_menu', 'tmwrath_menu');
 
-function tmwrath_menu_html()
-{
+function tmwrath_menu_html() {
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+    // Your menu HTML content here
+}
 
+function tmwrath_settings_html() {
     if (!current_user_can('manage_options')) {
         return;
     }
 
+    // Correctly output the settings form using echo
+    echo '<form method="post" action="options.php">';
+    settings_fields('tmwrath-settings-group');
+    do_settings_sections('tmwrath-settings');
+    submit_button();
+    echo '</form>';
 }
 
-function tmwrath_settings_html()
-{
+function tmwrath_register_settings() {
+    register_setting('tmwrath-settings-group', 'tmwrath_maintenance_mode');
+    add_settings_section(
+        'tmwrath_settings_section', // Section ID
+        'Maintenance Mode Settings', // Title
+        'tmwrath_settings_section_callback', // Callback function
+        'tmwrath-settings' // Page slug
+    );
+    add_settings_field(
+        'tmwrath-maintenance-mode', // ID
+        'Maintenance Mode', // Title
+        'tmwrath_maintenance_mode_callback', // Callback function to render the checkbox
+        'tmwrath-settings', // Page to display the setting
+        'tmwrath_settings_section' // Section ID
+    );
+}
+add_action('admin_init', 'tmwrath_register_settings');
 
-    if (!current_user_can('manage_options')) {
-        return;
+function tmwrath_settings_section_callback() {
+    echo '<p>Enable or Disable Maintenance Mode.</p>';
+}
+
+function tmwrath_maintenance_mode_callback() {
+    $value = get_option('tmwrath_maintenance_mode');
+    echo '<input type="checkbox" id="tmwrath_maintenance_mode" name="tmwrath_maintenance_mode" value="1" ' . checked(1, $value, false) . '/>';
+    echo '<label for="tmwrath_maintenance_mode">Enable Maintenance Mode</label>';
+}
+
+function tmwrath_maintenance_mode() {
+    if (get_option('tmwrath_maintenance_mode') && (!current_user_can('edit_themes') || !is_user_logged_in())) {
+        // Specify the path to your custom HTML file within your plugin directory
+        $maintenance_file = plugin_dir_path(__FILE__) . 'maintenance.html';
+        
+        // Check if the file exists
+        if (file_exists($maintenance_file)) {
+            // Include the HTML file
+            include($maintenance_file);
+            exit; // Stop further loading of WordPress
+        }
     }
-
 }
+add_action('template_redirect', 'tmwrath_maintenance_mode');
+
+
+
 
 function art_post_type()
 {
