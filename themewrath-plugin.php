@@ -86,19 +86,6 @@ function tmwrath_menu()
 }
 add_action('admin_menu', 'tmwrath_menu');
 
-function tmwrath_admin_menu_icon_css() {
-    echo '
-    <style>
-        #adminmenu .wp-menu-image img {
-
-            width: 60%;
-            height: 60%;
-
-        }
-    </style>';
-}
-add_action('admin_head', 'tmwrath_admin_menu_icon_css');
-
 function tmwrath_menu_html()
 {
 
@@ -129,18 +116,3 @@ function art_post_type()
     register_post_type('art', $args);
 }
 add_action('init', 'art_post_type');
-
-function test_menu()
-{
-    add_menu_page(
-        'Test', //page title
-        'Test', //menu title
-        'manage_options',
-        'test-menu', //slug
-        '', // menu html
-        '', // menu icon
-        20
-    );
-
-}
-add_action('admin_menu', 'test_menu');
