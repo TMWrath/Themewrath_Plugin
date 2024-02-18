@@ -16,17 +16,15 @@ if (!defined('ABSPATH')) {
 }
 
 
-/**
- * DEFINE PATHS
- */
-define( 'WRATH_PATH', plugin_dir_path( __FILE__ ) );
+// DEFINE PATHS
+
 define( 'WRATH_FILE', __FILE__ );
+define( 'WRATH_PATH', plugin_dir_path( WRATH_FILE ) );
 define( 'WRATH_CSS_PATH', WRATH_PATH . 'assets/css/' );
 
-/**
- * DEFINE URLS
- */
-define( 'WRATH_URL', plugin_dir_url( __FILE__ ) );
+// DEFINE URLS
+
+define( 'WRATH_URL', plugin_dir_url( WRATH_FILE ) );
 define( 'WRATH_IMAGES_URL', WRATH_URL . '/assets/images/' );
 
 $theme = wp_get_theme(); // Gets the current theme
@@ -45,6 +43,14 @@ if ('ThemeWrath' !== $theme->name && 'ThemeWrath' !== $theme->parent_theme) {
 
     return;
 }
+
+function Themewrath_Plugin_load_css()
+{
+    wp_register_style('main', get_template_directory_uri() . '/assets/css/main.css', array(), false, 'all');
+    wp_enqueue_style('main');
+
+}
+add_action('wp_enqueue_scripts', 'Themewrath_Plugin_load_css');
 
 // Remove Default Wordpress Post Post-Type.
 function remove_posts_menu()
@@ -135,7 +141,7 @@ function tmwrath_maintenance_mode_callback() {
 function tmwrath_maintenance_mode() {
     if (get_option('tmwrath_maintenance_mode') && (!current_user_can('edit_themes') || !is_user_logged_in())) {
         // Specify the path to your custom HTML file within your plugin directory
-        $maintenance_file = plugin_dir_path(__FILE__) . 'maintenance.html';
+        $maintenance_file = plugin_dir_path(WRATH_FILE) . 'maintenance.html';
         
         // Check if the file exists
         if (file_exists($maintenance_file)) {
@@ -146,9 +152,6 @@ function tmwrath_maintenance_mode() {
     }
 }
 add_action('template_redirect', 'tmwrath_maintenance_mode');
-
-
-
 
 function art_post_type()
 {
@@ -203,7 +206,7 @@ function themewrath_pages_on_activation() {
 }
 
 // Register the activation hook
-register_activation_hook(__FILE__, 'themewrath_pages_on_activation');
+register_activation_hook(WRATH_FILE, 'themewrath_pages_on_activation');
 
 // Admin notice for page creation
 function themewrath_admin_notice_page_creation() {
