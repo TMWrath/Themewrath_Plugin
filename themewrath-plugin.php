@@ -5,7 +5,7 @@
     Plugin Name: ThemeWrath Plugin
     Plugin URI: https://github.com/tmwrath/ThemeWrath-Plugin
     Description: ThemeWrath Plugin
-    Version: 0.0.1
+    Version: 0.0.2
 
 */
 
