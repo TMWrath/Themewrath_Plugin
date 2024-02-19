@@ -298,8 +298,10 @@ function custom_file_upload_callback($post) {
     wp_nonce_field('custom_file_upload_action', 'custom_file_upload_nonce');
     $existing_value = get_post_meta($post->ID, '_custom_art_file', true);
 
-    echo '<input type="file" id="custom_art_file" name="custom_art_file" size="25">';
-    if (!empty($existing_value)) {
+    // Only show the file input if there's no existing file.
+    if (empty($existing_value)) {
+        echo '<input type="file" id="custom_art_file" name="custom_art_file" size="25">';
+    } else {
         $file_url = wp_get_attachment_url($existing_value);
         echo "<p>Current File: <a href='{$file_url}' target='_blank'>" . basename($file_url) . "</a></p>";
         echo "<p><a href='#' id='delete_custom_art_file'>Delete File</a></p>";
