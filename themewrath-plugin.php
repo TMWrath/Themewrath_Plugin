@@ -284,3 +284,80 @@ function themewrath_plugin_get_latest_release_from_github()
     $release_data = json_decode(wp_remote_retrieve_body($response));
     return $release_data;
 }
+
+// art fields
+
+// Add Meta Box
+add_action('add_meta_boxes', 'custom_file_add_metabox');
+function custom_file_add_metabox() {
+    add_meta_box('custom_file_upload', 'Art File Upload', 'custom_file_upload_callback', 'art', 'side', 'default');
+}
+
+// Meta Box Display Callback
+function custom_file_upload_callback($post) {
+    wp_nonce_field('custom_file_upload_action', 'custom_file_upload_nonce');
+    $existing_value = get_post_meta($post->ID, '_custom_art_file', true);
+
+    echo '<input type="file" id="custom_art_file" name="custom_art_file" size="25">';
+    if (!empty($existing_value)) {
+        $file_url = wp_get_attachment_url($existing_value);
+        echo "<p>Current File: <a href='{$file_url}' target='_blank'>" . basename($file_url) . "</a></p>";
+        echo "<p><a href='#' id='delete_custom_art_file'>Delete File</a></p>";
+        echo '<input type="hidden" id="custom_art_file_delete" name="custom_art_file_delete" value="0">';
+    }
+}
+
+// Save Post and Handle File Upload/Delete
+add_action('save_post_art', 'custom_file_save_post');
+function custom_file_save_post($post_id) {
+    if (!isset($_POST['custom_file_upload_nonce']) || !wp_verify_nonce($_POST['custom_file_upload_nonce'], 'custom_file_upload_action')) {
+        return;
+    }
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if (isset($_POST['custom_art_file_delete']) && $_POST['custom_art_file_delete'] == '1') {
+        $existing_value = get_post_meta($post_id, '_custom_art_file', true);
+        if (!empty($existing_value)) {
+            wp_delete_attachment($existing_value, true);
+            delete_post_meta($post_id, '_custom_art_file');
+        }
+    } elseif (!empty($_FILES['custom_art_file']['name'])) {
+        $attachment_id = media_handle_upload('custom_art_file', $post_id);
+        if (!is_wp_error($attachment_id)) {
+            update_post_meta($post_id, '_custom_art_file', $attachment_id);
+        }
+    }
+}
+
+// Ensure form supports file uploads
+add_action('post_edit_form_tag', 'update_edit_form');
+function update_edit_form() {
+    echo ' enctype="multipart/form-data"';
+}
+
+// Enqueue JavaScript for Delete Action (Admin Area Only)
+add_action('admin_footer', 'custom_file_delete_script');
+function custom_file_delete_script() {
+    global $post;
+    if ($post->post_type == 'art') {
+        ?>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var deleteLink = document.getElementById('delete_custom_art_file');
+            if (deleteLink) {
+                deleteLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (confirm('Are you sure you want to delete this file?')) {
+                        document.getElementById('custom_art_file_delete').value = '1';
+                        this.closest('form').submit();
+                    }
+                });
+            }
+        });
+        </script>
+        <?php
+    }
+}
+
