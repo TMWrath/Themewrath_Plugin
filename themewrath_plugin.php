@@ -5,7 +5,7 @@
     Plugin Name: ThemeWrath-Plugin
     Plugin URI: https://github.com/tmwrath/themewrath_plugin
     Description: ThemeWrath Plugin
-    Version: 0.0.3
+    Version: 0.0.4
 */
 
 if (!defined('ABSPATH')) {
@@ -28,6 +28,7 @@ define('WRATH_IMAGES_URL', WRATH_URL . '/assets/images/');
 
 $theme = wp_get_theme(); // Gets the current theme
 
+/*
 // Check if 'ThemeWrath' is NOT the active theme or parent theme
 if ('ThemeWrath' !== $theme->name && 'ThemeWrath' !== $theme->parent_theme) {
     // ThemeWrath theme is not active, display admin notice and stop further execution
@@ -42,6 +43,7 @@ if ('ThemeWrath' !== $theme->name && 'ThemeWrath' !== $theme->parent_theme) {
 
     return;
 }
+*/
 
 // Load CSS
 
