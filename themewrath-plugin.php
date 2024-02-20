@@ -321,6 +321,7 @@ function custom_file_upload_callback($post) {
 }
 
 // Display callback for image upload
+
 function custom_image_upload_callback($post) {
     wp_nonce_field('custom_image_upload_action', 'custom_image_upload_nonce');
     $existing_value = get_post_meta($post->ID, '_custom_image', true);
