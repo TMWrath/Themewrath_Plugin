@@ -85,7 +85,7 @@ function remove_post_slug($post_link, $post)
 }
 add_filter('post_type_link', 'remove_post_slug', 10, 2);
 
-/// Add Admin Menu For T.M. Wrath Settings
+// Add Admin Menu For T.M. Wrath Settings
 
 function tmwrath_menu()
 {
@@ -123,20 +123,25 @@ function tmwrath_settings_html()
         return;
     }
 
-    // Correctly output the settings form using echo
-    echo '<form method="post" action="options.php">';
-    settings_fields('tmwrath-settings-group');
-    do_settings_sections('tmwrath-settings');
-    submit_button();
-    echo '</form>';
+    // Specify the path to your HTML file within your plugin directory
+    $settings_html_file = WRATH_PAGES_PATH . 'settings.php';
+
+    // Check if the file exists
+    if (file_exists($settings_html_file)) {
+        // Include the HTML file directly
+        include($settings_html_file);
+    } else {
+        // Fallback content if the HTML file is not found
+        echo '<p>Settings file not found.</p>';
+    }
 }
 
-function tmwrath_register_settings()
+function register_tmwrath_settings()
 {
     register_setting('tmwrath-settings-group', 'tmwrath_maintenance_mode');
     add_settings_section(
         'tmwrath_settings_section', // Section ID
-        'Maintenance Mode Settings', // Title
+        'T.M. Wrath Settings', // Title
         'tmwrath_settings_section_callback', // Callback function
         'tmwrath-settings' // Page slug
     );
@@ -148,19 +153,7 @@ function tmwrath_register_settings()
         'tmwrath_settings_section' // Section ID
     );
 }
-add_action('admin_init', 'tmwrath_register_settings');
-
-function tmwrath_settings_section_callback()
-{
-    echo '<p>Enable or Disable Maintenance Mode.</p>';
-}
-
-function tmwrath_maintenance_mode_callback()
-{
-    $value = get_option('tmwrath_maintenance_mode');
-    echo '<input type="checkbox" id="tmwrath_maintenance_mode" name="tmwrath_maintenance_mode" value="1" ' . checked(1, $value, false) . '/>';
-    echo '<label for="tmwrath_maintenance_mode">Enable Maintenance Mode</label>';
-}
+add_action('admin_init', 'register_tmwrath_settings');
 
 function tmwrath_maintenance_mode()
 {
