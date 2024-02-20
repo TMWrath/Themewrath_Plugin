@@ -30,7 +30,7 @@ function register_tmwrath_settings()
 {
     // Register Maintenance Mode setting
     register_setting('tmwrath-settings-group', 'tmwrath_maintenance_mode');
-    
+
     // Register Disable Default Post setting
     register_setting('tmwrath-settings-group', 'disable_default_post_type');
 
@@ -62,7 +62,7 @@ function register_tmwrath_settings()
         'tmwrath-settings', // Page to display the setting
         'tmwrath_settings_section' // Section ID
     );
-    
+
     // Add settings field for Enable Art Post
     add_settings_field(
         'enable_art_post_type', // ID
@@ -78,7 +78,7 @@ add_action('admin_init', 'register_tmwrath_settings');
 function tmwrath_maintenance_mode()
 {
     if (get_option('tmwrath_maintenance_mode') && (!current_user_can('edit_themes') || !is_user_logged_in())) {
-        
+
         $maintenance_file = WRATH_PAGES_PATH . 'maintenance.html';
 
         // Check if the file exists
