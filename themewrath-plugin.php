@@ -61,6 +61,8 @@ function Themewrath_Plugin_load_js()
 }
 add_action('wp_enqueue_scripts', 'Themewrath_Plugin_load_js');
 
+include_once 'functions/art_post.php';
+
 // Remove Default Wordpress Post Post-Type.
 function remove_posts_menu()
 {
