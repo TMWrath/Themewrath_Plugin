@@ -147,17 +147,17 @@ function themewrath_plugin_check_for_update($transient)
         return $transient;
     }
 
-    $current_version = $transient->checked['Themewrath_Plugin/themewrath-plugin.php']; // Adjust the plugin's main file path
+    $current_version = $transient->checked['themewrath_plugin/themewrath_plugin.php']; // Adjust the plugin's main file path
     $latest_release = themewrath_plugin_get_latest_release_from_github();
 
     if ($latest_release && version_compare($current_version, $latest_release->tag_name, '<')) {
         $obj = new stdClass();
         $obj->slug = 'themewrath-plugin';
-        $obj->plugin = 'Themewrath_Plugin/themewrath-plugin.php'; // Adjust the plugin's main file path
+        $obj->plugin = 'themewrath_plugin/themewrath_plugin.php'; // Adjust the plugin's main file path
         $obj->new_version = $latest_release->tag_name;
         $obj->url = $latest_release->html_url; // URL to the plugin homepage or GitHub release page
         $obj->package = $latest_release->zipball_url; // Direct URL to the zip file of the release
-        $transient->response['Themewrath_Plugin/themewrath-plugin.php'] = $obj; // Adjust the plugin's main file path
+        $transient->response['themewrath_plugin/themewrath_plugin.php'] = $obj; // Adjust the plugin's main file path
     }
 
     return $transient;
@@ -166,7 +166,7 @@ add_filter('pre_set_site_transient_update_plugins', 'themewrath_plugin_check_for
 
 function themewrath_plugin_get_latest_release_from_github()
 {
-    $url = "https://api.github.com/repos/TMWrath/Themewrath_Plugin/releases/latest"; // Adjust to your GitHub repo
+    $url = "https://api.github.com/repos/TMWrath/themewrath_plugin/releases/latest"; // Adjust to your GitHub repo
     $response = wp_remote_get(
         $url,
         array(

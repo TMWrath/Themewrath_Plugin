@@ -3,7 +3,7 @@
     Author: T.M. Wrath
     Author URI: https://tmwrath.com
     Plugin Name: ThemeWrath-Plugin
-    Plugin URI: https://github.com/tmwrath/ThemeWrath_Plugin
+    Plugin URI: https://github.com/tmwrath/themewrath_plugin
     Description: ThemeWrath Plugin
     Version: 0.0.3
 */
@@ -45,24 +45,24 @@ if ('ThemeWrath' !== $theme->name && 'ThemeWrath' !== $theme->parent_theme) {
 
 // Load CSS
 
-function Themewrath_Plugin_load_css()
+function themewrath_plugin_load_css()
 {
     wp_register_style('themewrath_plugin_main_css', get_template_directory_uri() . '/assets/css/main.css', array(), false, 'all');
     wp_enqueue_style('themewrath_plugin_main_css');
 
 }
-add_action('wp_enqueue_scripts', 'Themewrath_Plugin_load_css');
+add_action('wp_enqueue_scripts', 'themewrath_plugin_load_css');
 
 // Load JS
 
-function Themewrath_Plugin_load_js()
+function themewrath_plugin_load_js()
 {
 
     wp_register_script('themewrath_plugin_main_js', get_template_directory_uri() . '/assets/js/main.js', 'jquery', false, true);
     wp_enqueue_script('themewrath_plugin_main_js');
 
 }
-add_action('wp_enqueue_scripts', 'Themewrath_Plugin_load_js');
+add_action('wp_enqueue_scripts', 'themewrath_plugin_load_js');
 
 // Include Art Post Type
 
@@ -105,7 +105,7 @@ function tmwrath_menu()
         'tmwrath-settings',
         'tmwrath_settings_html'
     );
-    
+
 }
 add_action('admin_menu', 'tmwrath_menu');
 
