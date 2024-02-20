@@ -1,34 +1,58 @@
-<!-- Begin settings form -->
-<form method="post" action="options.php">
-    <?php settings_fields('tmwrath-settings-group'); ?>
-    <?php do_settings_sections('tmwrath-settings'); ?>
-    <?php submit_button(); ?>
-</form>
-<!-- End settings form -->
-<?php
+<div class="wrap">
+    <h1>T.M. Wrath Plugin Settings</h1>
+    <form method="post" action="options.php">
+        <?php settings_fields('tmwrath-settings-group'); ?>
+        <h2>General Settings</h2>
+        <table class="form-table">
+            <tbody>
+                <tr>
+                    <th scope="row">
+                        <label for="tmwrath_maintenance_mode">Maintenance Mode</label>
+                    </th>
+                    <td>
+                        <fieldset>
+                            <legend class="screen-reader-text"><span>Maintenance Mode</span></legend>
+                            <label>
+                                <input name="tmwrath_maintenance_mode" type="checkbox" id="tmwrath_maintenance_mode" value="1" <?php checked(1, get_option('tmwrath_maintenance_mode', 0)); ?>>
+                                Enable Maintenance Mode
+                            </label>
+                            <p class="description">If enabled, the site will be put into maintenance mode.</p>
+                        </fieldset>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="disable_default_post_type">Disable Default Post Type</label>
+                    </th>
+                    <td>
+                        <fieldset>
+                            <legend class="screen-reader-text"><span>Disable Default Post Type</span></legend>
+                            <label>
+                                <input name="disable_default_post_type" type="checkbox" id="disable_default_post_type" value="1" <?php checked(1, get_option('disable_default_post_type', 0)); ?>>
+                                Disable Default Post Type
+                            </label>
+                            <p class="description">If enabled, the default post type will be disabled.</p>
+                        </fieldset>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="enable_art_post_type">Enable Art Post Type</label>
+                    </th>
+                    <td>
+                        <fieldset>
+                            <legend class="screen-reader-text"><span>Enable Art Post Type</span></legend>
+                            <label>
+                                <input name="enable_art_post_type" type="checkbox" id="enable_art_post_type" value="1" <?php checked(1, get_option('enable_art_post_type', 0)); ?>>
+                                Enable Art Post Type
+                            </label>
+                            <p class="description">If enabled, the art post type will be available.</p>
+                        </fieldset>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <?php submit_button(); ?>
+    </form>
+</div>
 
-function tmwrath_settings_section_callback()
-{
-    echo '<p>Settings For T.M. Wrath Plugin</p>';
-}
-
-function tmwrath_maintenance_mode_callback()
-{
-    $value = get_option('tmwrath_maintenance_mode');
-    echo '<input type="checkbox" id="tmwrath_maintenance_mode" name="tmwrath_maintenance_mode" value="1" ' . checked(1, $value, false) . '/>';
-    echo '<label for="tmwrath_maintenance_mode">Enable Maintenance Mode</label>';
-}
-
-function disable_default_post_type_callback()
-{
-    $value = get_option('disable_default_post_type');
-    echo '<input type="checkbox" id="disable_default_post_type" name="disable_default_post_type" value="1" ' . checked(1, $value, false) . '/>';
-    echo '<label for="disable_default_post_type">Disable Default Post Type</label>';
-}
-
-function enable_art_post_type_callback()
-{
-    $value = get_option('enable_art_post_type');
-    echo '<input type="checkbox" id="enable_art_post_type" name="enable_art_post_type" value="1" ' . checked(1, $value, false) . '/>';
-    echo '<label for="enable_art_post_type">Enable Art Post Type</label>';
-}
