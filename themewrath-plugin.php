@@ -21,6 +21,7 @@ if (!defined('ABSPATH')) {
 define('WRATH_FILE', __FILE__);
 define('WRATH_PATH', plugin_dir_path(WRATH_FILE));
 define('WRATH_CSS_PATH', WRATH_PATH . 'assets/css/');
+define('WRATH_PAGES_PATH', WRATH_PATH . 'pages/');
 
 // DEFINE URLS
 
@@ -165,7 +166,7 @@ function tmwrath_maintenance_mode()
 {
     if (get_option('tmwrath_maintenance_mode') && (!current_user_can('edit_themes') || !is_user_logged_in())) {
         // Specify the path to your custom HTML file within your plugin directory
-        $maintenance_file = plugin_dir_path(WRATH_FILE) . 'maintenance.html';
+        $maintenance_file = WRATH_PAGES_PATH . 'maintenance.html';
 
         // Check if the file exists
         if (file_exists($maintenance_file)) {
