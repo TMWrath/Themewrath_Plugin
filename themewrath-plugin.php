@@ -44,6 +44,8 @@ if ('ThemeWrath' !== $theme->name && 'ThemeWrath' !== $theme->parent_theme) {
     return;
 }
 
+// Load CSS
+
 function Themewrath_Plugin_load_css()
 {
     wp_register_style('themewrath_plugin_main_css', get_template_directory_uri() . '/assets/css/main.css', array(), false, 'all');
@@ -51,6 +53,8 @@ function Themewrath_Plugin_load_css()
 
 }
 add_action('wp_enqueue_scripts', 'Themewrath_Plugin_load_css');
+
+// Load JS
 
 function Themewrath_Plugin_load_js()
 {
@@ -64,6 +68,7 @@ add_action('wp_enqueue_scripts', 'Themewrath_Plugin_load_js');
 include_once 'functions/art_post.php';
 
 // Remove Default Wordpress Post Post-Type.
+
 function remove_posts_menu()
 {
     remove_menu_page('edit.php');
@@ -80,6 +85,7 @@ function remove_post_slug($post_link, $post)
 add_filter('post_type_link', 'remove_post_slug', 10, 2);
 
 /// Add Admin Menu For T.M. Wrath Settings
+
 function tmwrath_menu()
 {
     add_menu_page(
@@ -184,8 +190,8 @@ function art_post_type()
 }
 add_action('init', 'art_post_type');
 
-
 // Create A Page On Activation
+
 function your_plugin_create_page($page_title, $page_content)
 {
     $page_obj = get_page_by_title($page_title, 'OBJECT', 'page');
@@ -209,6 +215,7 @@ function your_plugin_create_page($page_title, $page_content)
 }
 
 // Function to be called upon plugin activation
+
 function themewrath_pages_on_activation()
 {
     $page_title = 'The Collection'; // Define your page title here
@@ -226,9 +233,11 @@ function themewrath_pages_on_activation()
 }
 
 // Register the activation hook
+
 register_activation_hook(WRATH_FILE, 'themewrath_pages_on_activation');
 
 // Admin notice for page creation
+
 function themewrath_admin_notice_page_creation()
 {
     if ($notice = get_transient('themewrath_page_creation_notice')) {
@@ -297,6 +306,7 @@ add_action('add_meta_boxes', function() {
 });
 
 // Display callback for ZIP file upload
+
 function custom_file_upload_callback($post) {
     wp_nonce_field('custom_file_upload_action', 'custom_file_upload_nonce');
     $existing_value = get_post_meta($post->ID, '_custom_art_file', true);
@@ -325,6 +335,7 @@ function custom_image_upload_callback($post) {
 }
 
 // Save post action to handle both ZIP and image file uploads/deletions
+
 add_action('save_post_art', function($post_id) {
     if (!isset($_POST['custom_file_upload_nonce']) || !wp_verify_nonce($_POST['custom_file_upload_nonce'], 'custom_file_upload_action') || !isset($_POST['custom_image_upload_nonce']) || !wp_verify_nonce($_POST['custom_image_upload_nonce'], 'custom_image_upload_action')) {
         return;
@@ -340,6 +351,7 @@ add_action('save_post_art', function($post_id) {
 });
 
 // Generic function to handle file upload and deletion
+
 function custom_file_handle_upload($post_id, $file_input_name, $meta_key, $delete_field_name) {
     if (isset($_POST[$delete_field_name]) && $_POST[$delete_field_name] == '1') {
         $existing_value = get_post_meta($post_id, $meta_key, true);
@@ -359,11 +371,13 @@ function custom_file_handle_upload($post_id, $file_input_name, $meta_key, $delet
 }
 
 // Ensure the form includes enctype for file uploads
+
 add_action('post_edit_form_tag', function() {
     echo ' enctype="multipart/form-data"';
 });
 
 // JavaScript for handling delete actions
+
 add_action('admin_footer', function() {
     global $post;
     if ($post->post_type == 'art') {
