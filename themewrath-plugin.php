@@ -89,16 +89,6 @@ function tmwrath_menu()
         esc_url(WRATH_IMAGES_URL . 'icon.svg'), // menu icon
         20
     );
-
-    add_submenu_page(
-        'tmwrath-menu', //parent slug
-        'Art', //page title
-        'Art', //menu title
-        'manage_options', //capability
-        'edit.php?post_type=art', //menu slug, same as top-level to duplicate functionality
-        '' //function
-    );
-
     add_submenu_page(
         'tmwrath-menu',
         'Settings', //page title
@@ -116,7 +106,7 @@ function tmwrath_menu_html()
         return;
     }
 
-    $wrath_menu_html_file = WRATH_PAGES_PATH . 'wrath_menu.html';
+    $settings_html_file = WRATH_PAGES_PATH . 'settings.php';
 
     // Check if the file exists
     if (file_exists($wrath_menu_html_file)) {
