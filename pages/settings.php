@@ -25,3 +25,10 @@ function disable_default_post_type_callback()
     echo '<input type="checkbox" id="disable_default_post_type" name="disable_default_post_type" value="1" ' . checked(1, $value, false) . '/>';
     echo '<label for="disable_default_post_type">Disable Default Post Type</label>';
 }
+
+function enable_art_post_type_callback()
+{
+    $value = get_option('enable_art_post_type');
+    echo '<input type="checkbox" id="enable_art_post_type" name="enable_art_post_type" value="1" ' . checked(1, $value, false) . '/>';
+    echo '<label for="enable_art_post_type">Enable Art Post Type</label>';
+}

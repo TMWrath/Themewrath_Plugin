@@ -129,6 +129,9 @@ function register_tmwrath_settings()
     // Register Disable Default Post setting
     register_setting('tmwrath-settings-group', 'disable_default_post_type');
 
+    // Register Enable Art Post setting
+    register_setting('tmwrath-settings-group', 'enable_art_post_type');
+
     // Add settings section
     add_settings_section(
         'tmwrath_settings_section', // Section ID
@@ -151,6 +154,15 @@ function register_tmwrath_settings()
         'disable_default_post_type', // ID
         'Disable Default Post', // Title
         'disable_default_post_type_callback', // Callback function to render the checkbox
+        'tmwrath-settings', // Page to display the setting
+        'tmwrath_settings_section' // Section ID
+    );
+    
+    // Add settings field for Disable Default Post
+    add_settings_field(
+        'enable_art_post_type', // ID
+        'Enable Art Post', // Title
+        'enable_art_post_type_callback', // Callback function to render the checkbox
         'tmwrath-settings', // Page to display the setting
         'tmwrath_settings_section' // Section ID
     );
@@ -177,6 +189,7 @@ add_action('template_redirect', 'tmwrath_maintenance_mode');
 
 function art_post_type()
 {
+    if (get_option('enable_art_post_type')) {
     $args = array(
         'public' => true,
         'label' => 'Art',
@@ -185,6 +198,8 @@ function art_post_type()
         'show_in_menu' => 'tmwrath-menu', // Slug of the parent menu
     );
     register_post_type('art', $args);
+    }
+
 }
 add_action('init', 'art_post_type');
 
