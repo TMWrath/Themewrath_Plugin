@@ -68,22 +68,6 @@ add_action('wp_enqueue_scripts', 'Themewrath_Plugin_load_js');
 
 include_once 'functions/art_post.php';
 
-// Remove Default Wordpress Post Post-Type.
-
-function remove_posts_menu()
-{
-    remove_menu_page('edit.php');
-}
-add_action('admin_menu', 'remove_posts_menu');
-
-function remove_post_slug($post_link, $post)
-{
-    if ($post->post_type === 'post') {
-        return home_url('/');
-    }
-    return $post_link;
-}
-add_filter('post_type_link', 'remove_post_slug', 10, 2);
 
 // Add Admin Menu For T.M. Wrath Settings
 
@@ -123,7 +107,6 @@ function tmwrath_settings_html()
         return;
     }
 
-    // Specify the path to your HTML file within your plugin directory
     $settings_html_file = WRATH_PAGES_PATH . 'settings.php';
 
     // Check if the file exists
@@ -136,15 +119,25 @@ function tmwrath_settings_html()
     }
 }
 
+// Settings Area
+
 function register_tmwrath_settings()
 {
+    // Register Maintenance Mode setting
     register_setting('tmwrath-settings-group', 'tmwrath_maintenance_mode');
+    
+    // Register Disable Default Post setting
+    register_setting('tmwrath-settings-group', 'disable_default_post_type');
+
+    // Add settings section
     add_settings_section(
         'tmwrath_settings_section', // Section ID
         'T.M. Wrath Settings', // Title
         'tmwrath_settings_section_callback', // Callback function
         'tmwrath-settings' // Page slug
     );
+
+    // Add settings field for Maintenance Mode
     add_settings_field(
         'tmwrath-maintenance-mode', // ID
         'Maintenance Mode', // Title
@@ -152,13 +145,24 @@ function register_tmwrath_settings()
         'tmwrath-settings', // Page to display the setting
         'tmwrath_settings_section' // Section ID
     );
+
+    // Add settings field for Disable Default Post
+    add_settings_field(
+        'disable_default_post_type', // ID
+        'Disable Default Post', // Title
+        'disable_default_post_type_callback', // Callback function to render the checkbox
+        'tmwrath-settings', // Page to display the setting
+        'tmwrath_settings_section' // Section ID
+    );
+
 }
 add_action('admin_init', 'register_tmwrath_settings');
+
 
 function tmwrath_maintenance_mode()
 {
     if (get_option('tmwrath_maintenance_mode') && (!current_user_can('edit_themes') || !is_user_logged_in())) {
-        // Specify the path to your custom HTML file within your plugin directory
+        
         $maintenance_file = WRATH_PAGES_PATH . 'maintenance.html';
 
         // Check if the file exists
@@ -183,6 +187,25 @@ function art_post_type()
     register_post_type('art', $args);
 }
 add_action('init', 'art_post_type');
+
+// Remove Default Wordpress Post Post-Type.
+
+function remove_default_posts()
+{
+    if (get_option('disable_default_post_type')) {
+        remove_menu_page('edit.php');
+    }
+}
+add_action('admin_menu', 'remove_default_posts');
+
+function remove_post_slug($post_link, $post)
+{
+    if (get_option('disable_default_post_type') && $post->post_type === 'post') {
+        return home_url('/');
+    }
+    return $post_link;
+}
+add_filter('post_type_link', 'remove_post_slug', 10, 2);
 
 // Create A Page On Activation
 
