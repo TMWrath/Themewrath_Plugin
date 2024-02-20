@@ -3,7 +3,7 @@
     Author: T.M. Wrath
     Author URI: https://tmwrath.com
     Plugin Name: ThemeWrath Plugin
-    Plugin URI: https://github.com/tmwrath/ThemeWrath-Plugin
+    Plugin URI: https://github.com/tmwrath/ThemeWrath_Plugin
     Description: ThemeWrath Plugin
     Version: 0.0.2
 
