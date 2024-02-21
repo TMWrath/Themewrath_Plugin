@@ -45,6 +45,8 @@ add_action('add_meta_boxes', function() {
     add_meta_box('custom_file_upload', 'ZIP File Upload', 'custom_file_upload_callback', 'art', 'side', 'default');
     // Meta box for image upload
     add_meta_box('custom_image_upload', 'Image Upload', 'custom_image_upload_callback', 'art', 'side', 'default');
+    
+    add_meta_box('custom_color_picker', 'Select Colors', 'custom_color_picker_callback', 'art', 'side', 'default');
 });
 
 // Display callback for ZIP file upload
@@ -86,7 +88,10 @@ add_action('save_post_art', function($post_id) {
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
         return;
     }
-
+    if (isset($_POST['custom_colors_nonce'], $_POST['custom_colors']) && wp_verify_nonce($_POST['custom_colors_nonce'], basename(__FILE__))) {
+        $colors = array_map('sanitize_hex_color', $_POST['custom_colors']);
+        update_post_meta($post_id, '_custom_colors', $colors);
+    }
     // Handle ZIP file upload/delete
     custom_file_handle_upload($post_id, 'custom_art_file', '_custom_art_file', 'custom_art_file_delete');
     // Handle image upload/delete
@@ -145,3 +150,44 @@ add_action('admin_footer', function() {
         <?php
     }
 });
+
+// Color picker for colors
+
+function custom_color_picker_callback($post) {
+    // Use nonce for verification
+    wp_nonce_field(basename(__FILE__), 'custom_colors_nonce');
+
+    // Get the color values if already set
+    $colors = get_post_meta($post->ID, '_custom_colors', true);
+    if (!is_array($colors)) {
+        $colors = array('', '', '', ''); // Default to four empty values
+    }
+
+    // Output the color pickers
+    for ($i = 0; $i < 4; $i++) {
+        echo '<label>Color ' . ($i + 1) . ':</label> ';
+        echo '<input type="text" name="custom_colors[]" class="custom-color-field" value="' . esc_attr($colors[$i]) . '" data-default-color="#ffffff" /><br>';
+    }
+}
+
+add_action('admin_enqueue_scripts', function($hook_suffix) {
+    global $post;
+
+    if ($hook_suffix == 'post.php' || $hook_suffix == 'post-new.php') {
+        if ('art' === $post->post_type) {
+            wp_enqueue_style('wp-color-picker');
+            wp_enqueue_script('wp-color-picker');
+            add_action('admin_footer', 'color_picker_init');
+        }
+    }
+});
+
+function color_picker_init() {
+    ?>
+    <script>
+    jQuery(document).ready(function($) {
+        $('.custom-color-field').wpColorPicker();
+    });
+    </script>
+    <?php
+}
