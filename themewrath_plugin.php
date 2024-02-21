@@ -1,12 +1,12 @@
 <?php
-/*
-    Author: T.M. Wrath
-    Author URI: https://tmwrath.com
-    Plugin Name: ThemeWrath-Plugin
-    Plugin URI: https://github.com/tmwrath/themewrath_plugin
-    Description: ThemeWrath Plugin
-    Version: 0.0.4
-*/
+/**
+ * Plugin Name: ThemeWrath-Plugin
+ * Plugin URI: https://github.com/TMWrath/themewrath_plugin
+ * Description: ThemeWrath Plugin
+ * Version: 0.0.4
+ * Author: T.M. Wrath
+ * Author URI: https://tmwrath.com
+ */
 
 if (!defined('ABSPATH')) {
 
@@ -77,6 +77,7 @@ if (get_option('enable_art_post_type')) {
 // Include Settings
 
 include_once 'functions/settings_functions.php';
+include_once 'functions/updater.php';
 
 // Add Admin Menu For T.M. Wrath plugin
 
