@@ -35,6 +35,11 @@
                         </fieldset>
                     </td>
                 </tr>
+            </tbody>
+        </table>
+        <h2>Art Posts Settings</h2>
+        <table class="form-table">
+            <tbody>
                 <tr>
                     <th scope="row">
                         <label for="enable_art_post_type">Enable Art Post Type</label>
