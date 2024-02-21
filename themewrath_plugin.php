@@ -77,7 +77,6 @@ if (get_option('enable_art_post_type')) {
 // Include Settings
 
 include_once 'functions/settings_functions.php';
-include_once 'functions/updater.php';
 
 // Add Admin Menu For T.M. Wrath plugin
 

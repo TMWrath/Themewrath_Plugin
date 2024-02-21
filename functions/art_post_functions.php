@@ -128,28 +128,33 @@ add_action('post_edit_form_tag', function() {
 
 add_action('admin_footer', function() {
     global $post;
-    if ($post->post_type == 'art') {
-        ?>
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.delete-custom-file').forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    if (confirm('Are you sure you want to delete this item?')) {
-                        var targetId = this.getAttribute('data-target');
-                        var hiddenInput = document.getElementById(targetId);
-                        if (hiddenInput) {
-                            hiddenInput.value = '1';
-                            this.closest('form').submit();
+
+    // Ensure the global $post object is not null and is an object
+    if (null !== $post && is_object($post)) {
+        if ($post->post_type == 'art') {
+            ?>
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('.delete-custom-file').forEach(function(link) {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if (confirm('Are you sure you want to delete this item?')) {
+                            var targetId = this.getAttribute('data-target');
+                            var hiddenInput = document.getElementById(targetId);
+                            if (hiddenInput) {
+                                hiddenInput.value = '1';
+                                this.closest('form').submit();
+                            }
                         }
-                    }
+                    });
                 });
             });
-        });
-        </script>
-        <?php
+            </script>
+            <?php
+        }
     }
 });
+
 
 // Color picker for colors
 
