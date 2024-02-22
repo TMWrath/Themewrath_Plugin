@@ -55,6 +55,21 @@
                         </fieldset>
                     </td>
                 </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="enable_art_file_upload">Enable Art Post File Upload</label>
+                    </th>
+                    <td>
+                        <fieldset>
+                            <legend class="screen-reader-text"><span>Enable Art Post File Upload</span></legend>
+                            <label>
+                                <input name="enable_art_file_upload" type="checkbox" id="enable_art_file_upload" value="1" <?php checked(1, get_option('enable_art_file_upload', 0)); ?>>
+                                Enable Art Post File Upload
+                            </label>
+                            <p class="description">If enabled, the file upload (not image upload) in the art post type will be available.</p>
+                        </fieldset>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <?php submit_button(); ?>

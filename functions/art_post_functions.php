@@ -6,24 +6,19 @@ if (!defined('ABSPATH')) {
 
 }
 
-function Themewrath_art_load_css()
-{
-    wp_register_style('themewrath_art_css', get_template_directory_uri() . '/assets/css/art.css', array(), false, 'all');
-    wp_enqueue_style('themewrath_art_css');
-
+// Load CSS
+function load_art_css() {
+    wp_register_style('art_css', WRATH_URL . 'assets/css/art.css');
+    wp_enqueue_style('art_css');
 }
-add_action('wp_enqueue_scripts', 'Themewrath_art_load_css');
+add_action('wp_enqueue_scripts', 'load_art_css');
 
 // Load JS
-
-function Themewrath_art_load_js()
-{
-
-    wp_register_script('themewrath_art_js', get_template_directory_uri() . '/assets/js/art.js', 'jquery', false, true);
-    wp_enqueue_script('themewrath_art_js');
-
+function load_art_js() {
+    wp_register_script('art_js', WRATH_URL . 'assets/js/art.js', array('jquery'), '1.0', true);
+    wp_enqueue_script('art_js');
 }
-add_action('wp_enqueue_scripts', 'Themewrath_art_load_js');
+add_action('wp_enqueue_scripts', 'load_art_js');
 
 function art_post_type()
 {
@@ -42,10 +37,12 @@ add_action('init', 'art_post_type');
 
 add_action('add_meta_boxes', function() {
     // Meta box for ZIP file upload
+    if(get_option('enable_art_file_upload')){
     add_meta_box('custom_file_upload', 'ZIP File Upload', 'custom_file_upload_callback', 'art', 'side', 'default');
+    }
     // Meta box for image upload
     add_meta_box('custom_image_upload', 'Image Upload', 'custom_image_upload_callback', 'art', 'side', 'default');
-    
+
     add_meta_box('custom_color_picker', 'Select Colors', 'custom_color_picker_callback', 'art', 'side', 'default');
 });
 
@@ -160,7 +157,7 @@ add_action('admin_footer', function() {
 
 function custom_color_picker_callback($post) {
     // Use nonce for verification
-    wp_nonce_field(basename(__FILE__), 'custom_colors_nonce');
+    wp_nonce_field(basename(WRATH_FILE), 'custom_colors_nonce');
 
     // Get the color values if already set
     $colors = get_post_meta($post->ID, '_custom_colors', true);

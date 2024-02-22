@@ -37,6 +37,9 @@ function register_tmwrath_settings()
     // Register Enable Art Post setting
     register_setting('tmwrath-settings-group', 'enable_art_post_type');
 
+    // Register Enable Art Post setting
+    register_setting('tmwrath-settings-group', 'enable_art_file_upload');
+
     // Add settings section
     add_settings_section(
         'tmwrath_settings_section', // Section ID
@@ -68,6 +71,15 @@ function register_tmwrath_settings()
         'enable_art_post_type', // ID
         'Enable Art Post', // Title
         'enable_art_post_type_callback', // Callback function to render the checkbox
+        'tmwrath-settings', // Page to display the setting
+        'tmwrath_settings_section' // Section ID
+    );
+
+    // Add settings field for Enable Art Post
+    add_settings_field(
+        'enable_art_file_upload', // ID
+        'Enable Art Post File Upload', // Title
+        'enable_art_file_upload_callback', // Callback function to render the checkbox
         'tmwrath-settings', // Page to display the setting
         'tmwrath_settings_section' // Section ID
     );
@@ -136,4 +148,11 @@ function enable_art_post_type_callback()
     $value = get_option('enable_art_post_type');
     echo '<input type="checkbox" id="enable_art_post_type" name="enable_art_post_type" value="1" ' . checked(1, $value, false) . '/>';
     echo '<label for="enable_art_post_type">Enable Art Post Type</label>';
+}
+
+function enable_art_file_upload_callback()
+{
+    $value = get_option('enable_art_file_upload');
+    echo '<input type="checkbox" id="enable_art_file_upload" name="enable_art_file_upload" value="1" ' . checked(1, $value, false) . '/>';
+    echo '<label for="enable_art_file_upload">Enable Art Post File Upload</label>';
 }
