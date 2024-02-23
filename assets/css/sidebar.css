@@ -1,0 +1,16 @@
+#menubar {
+    
+    color: white;
+    display: flex;
+    flex-direction: column;
+    border-right: 2px solid white;
+    background-color: black;
+    position: fixed;
+    left: -250px;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    transition: left 0.5s;
+    z-index: 1000;
+    
+}

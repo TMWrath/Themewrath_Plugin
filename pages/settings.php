@@ -35,6 +35,21 @@
                         </fieldset>
                     </td>
                 </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="enable_left_sidebar">Enable Left Sidebar</label>
+                    </th>
+                    <td>
+                        <fieldset>
+                            <legend class="screen-reader-text"><span>Disable Default Post Type</span></legend>
+                            <label>
+                                <input name="enable_left_sidebar" type="checkbox" id="enable_left_sidebar" value="1" <?php checked(1, get_option('enable_left_sidebar', 0)); ?>>
+                                Enable Left Sidebar
+                            </label>
+                            <p class="description">If enabled, Left Sidebar will be available.</p>
+                        </fieldset>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <h2>Art Posts Settings</h2>

@@ -40,6 +40,9 @@ function register_tmwrath_settings()
     // Register Enable Art Post setting
     register_setting('tmwrath-settings-group', 'enable_art_file_upload');
 
+    // Register Enable Art Post setting
+    register_setting('tmwrath-settings-group', 'enable_left_sidebar');
+
     // Add settings section
     add_settings_section(
         'tmwrath_settings_section', // Section ID
@@ -84,6 +87,15 @@ function register_tmwrath_settings()
         'tmwrath_settings_section' // Section ID
     );
 
+        // Add settings field for Enable Art Post
+        add_settings_field(
+            'enable_left_sidebar', // ID
+            'Enable Left Sidebar', // Title
+            'enable_left_sidebar_callback', // Callback function to render the checkbox
+            'tmwrath-settings', // Page to display the setting
+            'tmwrath_settings_section' // Section ID
+        );
+
 }
 add_action('admin_init', 'register_tmwrath_settings');
 
@@ -122,8 +134,6 @@ function remove_post_slug($post_link, $post)
 }
 add_filter('post_type_link', 'remove_post_slug', 10, 2);
 
-
-
 function tmwrath_settings_section_callback()
 {
     echo '<p>Settings For T.M. Wrath Plugin</p>';
@@ -155,4 +165,11 @@ function enable_art_file_upload_callback()
     $value = get_option('enable_art_file_upload');
     echo '<input type="checkbox" id="enable_art_file_upload" name="enable_art_file_upload" value="1" ' . checked(1, $value, false) . '/>';
     echo '<label for="enable_art_file_upload">Enable Art Post File Upload</label>';
+}
+
+function enable_left_sidebar_callback()
+{
+    $value = get_option('enable_left_sidebar');
+    echo '<input type="checkbox" id="enable_left_sidebar" name="enable_left_sidebar" value="1" ' . checked(1, $value, false) . '/>';
+    echo '<label for="enable_art_file_upload">Enable Left Sidebar</label>';
 }

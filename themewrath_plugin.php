@@ -42,7 +42,10 @@ if (get_option('enable_art_post_type')) {
 
 // Include Settings
 include_once 'functions/settings_functions.php';
-include_once 'assets/functions/sidebar_functions.php';
+
+if (get_option('enable_left_sidebar')) {
+include_once 'functions/sidebar_functions.php';
+}
 
 // Add Admin Menu For T.M. Wrath plugin
 function int_tmwrath_menu() {
